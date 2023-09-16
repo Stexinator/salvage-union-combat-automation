@@ -11,6 +11,15 @@
   },
   "description": "A Salvage Union module to help with some combat automation",
   "download": "direct download zip",
+  "includes": [
+    "./assets/**",
+    "./languages/**",
+    "./scripts/**",
+    "./styles/**",
+    "./templates/**",
+    "./module.json",
+    "./README.md"
+  ],
   "esmodules": [
     "scripts/module.js",
     "scripts/damage.js"
