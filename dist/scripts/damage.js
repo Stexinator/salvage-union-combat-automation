@@ -1,6 +1,6 @@
 
 Hooks.on('renderChatMessage', async function(message, html){
-    html.find('.su-combatautomation-damagebutton').on('click', ev => {
+    html.find('.su-combatautomation-damagebutton').on('click', _ => {
         SalvageUnionCombatAutomationDamage.applyDamage(message);
     })
 });
@@ -22,9 +22,11 @@ class SalvageUnionCombatAutomationDamage{
 
     static async applyDamageToSp(target, damage) {
         let damageNumber = damage.match(/\d+/).pop();
+
         if(damage.includes("HP")) {
             damageNumber = Math.floor(damageNumber*0.5);
         }
+
         let newSp = target.system.sp.value - damageNumber;
         target.update({ 'system.sp.value': newSp });
 
@@ -35,9 +37,11 @@ class SalvageUnionCombatAutomationDamage{
 
     static async applyDamageToHp(target, damage) {
         let damageNumber = damage.match(/\d+/).pop();
-        if(damage.includes("SP")) {
+
+        if(damage.includes("SP") && target.system.healthType !== 'sp') {
             damageNumber = damageNumber*2;
        }
+
        let newHp = target.system.hp.value - damageNumber;
        target.update({ 'system.hp.value': newHp });
 
