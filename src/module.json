@@ -10,7 +10,7 @@
     "verified": "11"
   },
   "description": "A Salvage Union module to help with some combat automation",
-  "download": "direct download zip",
+  "download": "https://github.com/Stexinator/salvage-union-combat-automation/releases/latest/download/module.zip",
   "includes": [
     "./assets/**",
     "./packs/**",
@@ -33,7 +33,7 @@
       "flags": {}
     }
   ],
-  "manifest": "manifest link to download",
+  "manifest": "https://github.com/Stexinator/salvage-union-combat-automation/releases/latest/download/module.json",
   "readme": "README.md",
   "relationships": {
     "systems": [
@@ -51,8 +51,8 @@
     "styles/module.css"
   ],
   "title": "Salvage Union Combat Automation Module",
-  "url": "URL to host site",
-  "version": "v0.0.4",
+  "url": "https://github.com/Stexinator/salvage-union-combat-automation",
+  "version": "0.0.5",
   "id": "salvage-union-combat-automation",
   "packs": [
     {
