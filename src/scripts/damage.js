@@ -1,11 +1,4 @@
-
-Hooks.on('renderChatMessage', async function(message, html){
-    html.find('.su-combatautomation-damagebutton').on('click', _ => {
-        SalvageUnionCombatAutomationDamage.applyDamage(message);
-    })
-});
-
-class SalvageUnionCombatAutomationDamage{
+export default class SalvageUnionCombatAutomationDamage{
 
     static async applyDamage(message) {
 
@@ -18,6 +11,12 @@ class SalvageUnionCombatAutomationDamage{
         else {
             this.applyDamageToHp(target, damage)
         }
+
+        ChatMessage.create({ 
+            content:  game.i18n.format("salvage-union-combat-automation.apply-damage", {damage: damage, name: target.name}), 
+            speaker: { alias: game.user.name } 
+        });
+        
     }
 
     static async applyDamageToSp(target, damage) {

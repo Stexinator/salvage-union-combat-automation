@@ -2,6 +2,20 @@
   "salvage-union-combat-automation": {
     "attackRoll": "Click to attack",
     "target": "Target",
-    "no-target": "No Target"
+    "no-target": "No Target",
+    "apply-damage": "Applied {damage} to {name}",
+
+    "heat-check-required": "Heat check required",
+    "too-much-heat": "Too much heat, action not possible",
+
+    "dialog": {
+      "title": "Heat Amount",
+      "heat-produced": "How much heat produced:"
+    },
+
+    "buttons": {
+      "deal-damage": "Deal Damage",
+      "heatcheck" : "Heat Check"
+    }
   }
 }

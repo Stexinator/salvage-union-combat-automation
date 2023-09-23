@@ -1,14 +1,7 @@
-Hooks.on('renderSalvageUnionActorSheet', async function(actor, html) {
-
-    SalvageUnionCombatAutomation.addAutomationToWeapons(actor, html)
-
-    html.find('.su-combatautomation-dicebutton').on('click', ev => {
-        SalvageUnionCombatAutomation.handleAttackRollButton(ev);
-    })
-});
+import SalvageUnionCombatAutomationHeat from "./heat.js"
 
 
-class SalvageUnionCombatAutomation{
+export default class SalvageUnionCombatAutomationWeapons{
 
     static addAutomationToWeapons(actor, html) {
         let weapons = this.getAllWeapons(actor)
@@ -58,31 +51,42 @@ class SalvageUnionCombatAutomation{
 
         let traits = weapon.system.traits.join(" // ")
 
-        const messageTemplate = 'modules/salvage-union-combat-automation/templates/attack.hbs'
-        const templateContext = {
-            name: weapon.name,
-            target: game.user.targets?.first()?.document.name ?? game.i18n.localize('salvage-union-combat-automation.no-target'),
-            result: result.results[0],
-            system: weapon.system,
-            traits: traits,
-            roll: result.roll,
-            activeStatus: CONFIG.SALVAGE.statusTypes.ACTIVE,
-            noTarget: game.user.targets?.first()?.document.name == null
-          }
-      
-        const content = await renderTemplate(messageTemplate, templateContext)
-        const chatData = {
-            user: game.user._id,
-            speaker: ChatMessage.getSpeaker(),
-            roll: result.roll,
-            content: content,
-            sound: CONFIG.sounds.dice,
-            type: CONST.CHAT_MESSAGE_TYPES.ROLL,
+        if(await this.handleTraits(weapon)) {
+            const messageTemplate = 'modules/salvage-union-combat-automation/templates/attack.hbs'
+            const templateContext = {
+                name: weapon.name,
+                target: game.user.targets?.first()?.document.name ?? game.i18n.localize('salvage-union-combat-automation.no-target'),
+                result: result.results[0],
+                system: weapon.system,
+                traits: traits,
+                roll: result.roll,
+                activeStatus: CONFIG.SALVAGE.statusTypes.ACTIVE,
+                noTarget: game.user.targets?.first()?.document.name == null
+              }
+          
+            const content = await renderTemplate(messageTemplate, templateContext)
+            const chatData = {
+                user: game.user._id,
+                speaker: ChatMessage.getSpeaker(),
+                roll: result.roll,
+                content: content,
+                sound: CONFIG.sounds.dice,
+                type: CONST.CHAT_MESSAGE_TYPES.ROLL,
+            }
+    
+            let message = await ChatMessage.create(chatData)
+    
+            message.setFlag('salvage-union-combat-automation', 'damage', weapon.system.damage)
+            message.setFlag('salvage-union-combat-automation', 'target', game.user.targets?.first()?.actor.uuid)
         }
-
-        let message = await ChatMessage.create(chatData)
-
-        message.setFlag('salvage-union-combat-automation', 'damage', weapon.system.damage)
-        message.setFlag('salvage-union-combat-automation', 'target', game.user.targets?.first()?.actor.uuid)
     }
+
+    static async handleTraits(weapon) {
+        let hot = weapon.system.traits.filter(trait => trait.includes('Hot'))[0]
+
+        let heat = await SalvageUnionCombatAutomationHeat.handleHeat(hot, weapon.actor)
+
+        return heat;
+    }
+
 }
