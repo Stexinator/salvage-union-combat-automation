@@ -10,19 +10,10 @@
     "verified": "11"
   },
   "description": "A Salvage Union module to help with some combat automation",
-  "download": "https://github.com/Stexinator/salvage-union-combat-automation/releases/latest/download/module.zip",
-  "includes": [
-    "./assets/**",
-    "./packs/**",
-    "./languages/**",
-    "./scripts/**",
-    "./styles/**",
-    "./templates/**",
-    "./module.json",
-    "./README.md"
-  ],
+  "download": "direct download zip",
   "esmodules": [
-    "scripts/module.js",
+    "scripts/hooks.js",
+    "scripts/weapons.js",
     "scripts/damage.js"
   ],
   "languages": [
@@ -33,13 +24,13 @@
       "flags": {}
     }
   ],
-  "manifest": "https://github.com/Stexinator/salvage-union-combat-automation/releases/latest/download/module.json",
+  "manifest": "manifest link to download",
   "readme": "README.md",
   "relationships": {
     "systems": [
       {
         "compatibility": {
-          "verified": "1.0"
+          "verified": "1.0.3"
         },
         "id": "salvage-union",
         "manifest": "https://gitlab.com/api/v4/projects/pacosgrove1%2Fsalvage-union-foundry-vtt-unofficial/packages/generic/salvage-union/latest/system.json",
@@ -51,8 +42,8 @@
     "styles/module.css"
   ],
   "title": "Salvage Union Combat Automation Module",
-  "url": "https://github.com/Stexinator/salvage-union-combat-automation",
-  "version": "0.0.6",
+  "url": "URL to host site",
+  "version": "0.0.7",
   "id": "salvage-union-combat-automation",
   "packs": [
     {
