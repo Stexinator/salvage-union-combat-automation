@@ -1,6 +1,8 @@
 {
   "salvage-union-combat-automation": {
     "attackRoll": "Click to attack",
+    "energyRoll": "Click to use",
+
     "target": "Target",
     "no-target": "No Target",
     "apply-damage": "Applied {damage} to {name}",
@@ -8,9 +10,22 @@
     "heat-check-required": "Heat check required",
     "too-much-heat": "Too much heat, action not possible",
 
-    "dialog": {
+    "too-less-energy": "You have not enough energy",
+    "too-less-ap": "You have not enough ability points",
+
+    "heat-dialog": {
       "title": "Heat Amount",
       "heat-produced": "How much heat produced:"
+    },
+
+    "energy-dialog": {
+      "title": "Energy Amount",
+      "energy-spent": "How much energy spent:"
+    },
+
+    "ability-dialog": {
+      "title": "Ability Points",
+      "ap-spent": "How much ability points spent:"
     },
 
     "buttons": {

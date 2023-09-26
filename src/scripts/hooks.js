@@ -1,12 +1,18 @@
 import SalvageUnionCombatAutomationWeapons from "./weapons.js"
 import SalvageUnionCombatAutomationDamage from "./damage.js"
+import SalvageUnionCombatAutomationResources from "./resources.js"
 
 Hooks.on('renderSalvageUnionActorSheet', async function(actor, html) {
 
     SalvageUnionCombatAutomationWeapons.addAutomationToWeapons(actor, html)
+    SalvageUnionCombatAutomationResources.addAutomationToEnergyItems(actor, html)
 
-    html.find('.su-combatautomation-dicebutton').on('click', ev => {
+    html.find('.su-combatautomation-combatdicebutton').on('click', ev => {
         SalvageUnionCombatAutomationWeapons.handleAttackRollButton(ev);
+    })
+
+    html.find('.su-combatautomation-resourcedicebutton').on('click', ev => {
+        SalvageUnionCombatAutomationResources.handleResource(ev);
     })
 });
 

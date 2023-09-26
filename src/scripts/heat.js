@@ -13,8 +13,8 @@ export default class SalvageUnionCombatAutomationHeat{
 
         if(heatValue == 'X') {
             heatValue = await Dialog.prompt({
-                title:  game.i18n.format("salvage-union-combat-automation.dialog.title"),
-                content: game.i18n.format("salvage-union-combat-automation.dialog.heat-produced") + '<input type="number">',
+                title:  game.i18n.format("salvage-union-combat-automation.heat-dialog.title"),
+                content: game.i18n.format("salvage-union-combat-automation.heat-dialog.heat-produced") + '<input type="number">',
                 callback: (html) => html.find('input').val()
             });
             
