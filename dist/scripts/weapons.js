@@ -39,7 +39,7 @@ export default class SalvageUnionCombatAutomationWeapons{
     static createAttackRollButton( weaponId) {
         const tooltip = game.i18n.localize('salvage-union-combat-automation.attackRoll');
 
-        return `<small><button type='button' title='${tooltip}' class="su-combatautomation-dicebutton" weapon-uuid='${weaponId}'><i class="fas fa-dice-d20"></i></button></small>`
+        return `<small><button type='button' title='${tooltip}' class="su-combatautomation-combatdicebutton" weapon-uuid='${weaponId}'><i class="fas fa-dice-d20"></i></button></small>`
     }
 
     static async handleAttackRollButton(ev) {
@@ -67,7 +67,6 @@ export default class SalvageUnionCombatAutomationWeapons{
             const content = await renderTemplate(messageTemplate, templateContext)
             const chatData = {
                 user: game.user._id,
-                speaker: ChatMessage.getSpeaker(),
                 roll: result.roll,
                 content: content,
                 sound: CONFIG.sounds.dice,

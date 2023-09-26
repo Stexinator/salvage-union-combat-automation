@@ -22,9 +22,7 @@
     "./README.md"
   ],
   "esmodules": [
-    "scripts/hooks.js",
-    "scripts/weapons.js",
-    "scripts/damage.js"
+    "scripts/hooks.js"
   ],
   "languages": [
     {
@@ -53,7 +51,7 @@
   ],
   "title": "Salvage Union Combat Automation Module",
   "url": "https://github.com/Stexinator/salvage-union-combat-automation",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "id": "salvage-union-combat-automation",
   "packs": [
     {

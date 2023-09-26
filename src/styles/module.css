@@ -1,4 +1,6 @@
-button.su-combatautomation-dicebutton {
+button.su-combatautomation-combatdicebutton,
+button.su-combatautomation-energydicebutton
+ {
     max-width: 30px;
     background: none;
     text-align: center;
