@@ -5,6 +5,9 @@
 - When targeted the output can apply the damage to the target via a button
 
 ## Changelog
+0.0.10
+- add modules to automation
+
 0.0.8
 - added automatic deduction for ep and ap
   - when costs of X the chat output will replace x with actual value

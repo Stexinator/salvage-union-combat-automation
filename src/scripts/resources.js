@@ -9,17 +9,18 @@ export default class SalvageUnionCombatAutomationResources{
         let actor = sheet.object
 
         let systems = actor?.system?.systems || [];
+        let modules = actor?.system?.modules || [];
         let equipments = actor?.system?.equipment || [];
         let abilities = actor?.system?.abilities || [];
 
-        let items = systems.concat(equipments).concat(abilities).filter(system => (system.system.ep && system.system.ep != "") || system.system.ap && system.system.ap != "")
+        let items = systems.concat(modules).concat(equipments).concat(abilities).filter(system => (system.system.ep && system.system.ep != "") || system.system.ap && system.system.ap != "")
 
         return items;
     }
 
     static addButtonToItems( items, html) {
         const htmls = items.reduce((acc, item) => {
-            const node = html.find(`h2.item-context-menu.title[data-item-id="${item._id}"]`);
+            const node = html.find(`h2.item-context-menu.title[data-item-id="${item.id}"]`);
             if(node) {
                 acc.push({node: node, uuid: item.uuid});
             } 
@@ -88,7 +89,7 @@ export default class SalvageUnionCombatAutomationResources{
         
         const content = await renderTemplate(messageTemplate, templateContext)
         const chatData = {
-            user: game.user._id,
+            user: game.user.id,
             content: content,
             sound: CONFIG.sounds.dice,
             type: CONST.CHAT_MESSAGE_TYPES.ROLL,
@@ -140,7 +141,7 @@ export default class SalvageUnionCombatAutomationResources{
           
         const content = await renderTemplate(messageTemplate, templateContext)
         const chatData = {
-            user: game.user._id,
+            user: game.user.id,
             content: content,
             sound: CONFIG.sounds.dice,
             type: CONST.CHAT_MESSAGE_TYPES.ROLL,
