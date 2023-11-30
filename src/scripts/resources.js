@@ -13,7 +13,7 @@ export default class SalvageUnionCombatAutomationResources{
         let equipments = actor?.system?.equipment || [];
         let abilities = actor?.system?.abilities || [];
 
-        let items = systems.concat(modules).concat(equipments).concat(abilities).filter(system => (system.system.ep && system.system.ep != "") || system.system.ap && system.system.ap != "")
+        let items = systems.concat(modules).concat(equipments).concat(abilities).filter(item => (item.system.ep && item.system.ep != "") || (item.system.ap && item.system.ap != "") || (item.system.uses.max && item.system.uses.max != 0 && !item.system.damage))
 
         return items;
     }
@@ -47,13 +47,14 @@ export default class SalvageUnionCombatAutomationResources{
 
         this.handleEnergy(item, actor)
         this.handleAp(item, actor)
+        this.handleUses(item)
 
     }
 
     static async handleEnergy(item, actor) {
         let energy = item.system.ep
 
-        if(energy == undefined) {
+        if(energy == undefined || actor.type == "npc-mech") {
             return;
         }
 
@@ -103,7 +104,7 @@ export default class SalvageUnionCombatAutomationResources{
     static async handleAp(item, actor) {
         let ap = item.system.ap
 
-        if(ap == undefined) {
+        if(ap == undefined || actor.type == "npc") {
             return;
         }
 
@@ -150,5 +151,45 @@ export default class SalvageUnionCombatAutomationResources{
             await ChatMessage.create(chatData)
 
         actor.update({ 'system.ability-points.value': abilitypoints - value });
+    }
+
+    static async handleUses(item) {
+        if(item.system.uses.value == 0) {
+            ui.notifications.error(game.i18n.format("salvage-union-combat-automation.no-uses-left"))
+            return;
+        }
+
+        let rollTable = item.system.table
+        let result = await rollTable?.roll()
+
+        const messageTemplate = 'modules/salvage-union-combat-automation/templates/item.hbs'
+        const templateContext = {
+            item: item,
+            roll: result?.roll,
+            result: result?.results[0]
+            }
+        
+        const content = await renderTemplate(messageTemplate, templateContext)
+        const chatData = {
+            user: game.user.id,
+            content: content,
+            sound: CONFIG.sounds.dice,
+            type: CONST.CHAT_MESSAGE_TYPES.ROLL,
+        }
+
+        await ChatMessage.create(chatData)
+
+        item.update({'system.uses.value': item.system.uses.value - 1})
+    }
+
+    static async handleUsesWeapon(item) {
+        if(item.system.uses.value == 0) {
+            ui.notifications.error(game.i18n.format("salvage-union-combat-automation.no-uses-left"))
+            return false;
+        }
+
+        item.update({'system.uses.value': item.system.uses.value - 1})
+
+        return true;
     }
 }

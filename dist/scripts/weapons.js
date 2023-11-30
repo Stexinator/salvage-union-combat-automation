@@ -1,4 +1,5 @@
 import SalvageUnionCombatAutomationHeat from "./heat.js"
+import SalvageUnionCombatAutomationResources from "./resources.js"
 
 
 export default class SalvageUnionCombatAutomationWeapons{
@@ -15,7 +16,7 @@ export default class SalvageUnionCombatAutomationWeapons{
         let equipments = actor?.system?.equipment || [];
         let abilities = actor?.system?.abilities || [];
 
-        let weapons = systems.concat(equipments).concat(abilities).filter(system => system.system.damage && system.system.damage != "")
+        let weapons = systems.concat(equipments).concat(abilities).filter(item => item.system.damage && item.system.damage != "")
 
         return weapons;
     }
@@ -81,11 +82,16 @@ export default class SalvageUnionCombatAutomationWeapons{
     }
 
     static async handleTraits(weapon) {
+        let checks = []
         let hot = weapon.system.traits.filter(trait => trait.includes('Hot'))[0]
+        checks.push(SalvageUnionCombatAutomationHeat.handleHeat(hot, weapon.actor))
 
-        let heat = await SalvageUnionCombatAutomationHeat.handleHeat(hot, weapon.actor)
+        if(weapon.system.traits.filter(trait => trait.includes('Uses').length > 0)) {
+            checks.push(SalvageUnionCombatAutomationResources.handleUsesWeapon(weapon))
+        }
+        
 
-        return heat;
+        return (await Promise.all(checks)).every(check => check);
     }
 
 }

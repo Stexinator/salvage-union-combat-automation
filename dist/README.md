@@ -5,6 +5,10 @@
 - When targeted the output can apply the damage to the target via a button
 
 ## Changelog
+0.0.12
+- support uses
+- fix npc-mech heat check
+
 0.0.10
 - add modules to automation
 
