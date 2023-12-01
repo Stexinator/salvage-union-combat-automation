@@ -154,6 +154,10 @@ export default class SalvageUnionCombatAutomationResources{
     }
 
     static async handleUses(item) {
+        if(item.system.uses.max == 0){
+            return
+        }
+        
         if(item.system.uses.value == 0) {
             ui.notifications.error(game.i18n.format("salvage-union-combat-automation.no-uses-left"))
             return;
