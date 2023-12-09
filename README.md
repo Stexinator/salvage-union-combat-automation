@@ -5,8 +5,8 @@
 - When targeted the output can apply the damage to the target via a button
 
 ## Changelog
-0.0.14
-- do not inform player that items without uses dont have any uses left
+0.0.15
+- do not inform player that items without uses do not have any uses left
 
 0.0.12
 - support uses

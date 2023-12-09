@@ -122,7 +122,6 @@ export default class SalvageUnionCombatAutomationResources{
         }
 
         value = parseInt(value);
-        console.log(value)
 
         if((abilitypoints - value) < 0) {
             ui.notifications.error(game.i18n.format("salvage-union-combat-automation.too-less-ap"))
@@ -187,6 +186,10 @@ export default class SalvageUnionCombatAutomationResources{
     }
 
     static async handleUsesWeapon(item) {
+        if(item.system.uses.max == 0){
+            return true;
+        }
+
         if(item.system.uses.value == 0) {
             ui.notifications.error(game.i18n.format("salvage-union-combat-automation.no-uses-left"))
             return false;
