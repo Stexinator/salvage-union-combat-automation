@@ -62,7 +62,8 @@ export default class SalvageUnionCombatAutomationWeapons{
                 traits: traits,
                 roll: result.roll,
                 activeStatus: CONFIG.SALVAGE.statusTypes.ACTIVE,
-                noTarget: game.user.targets?.first()?.document.name == null
+                noTarget: game.user.targets?.first()?.document.name == null,
+                customButtons: game.settings.get('salvage-union-combat-automation', 'customDamageButtons').replace(',', ';').split(';')
               }
           
             const content = await renderTemplate(messageTemplate, templateContext)

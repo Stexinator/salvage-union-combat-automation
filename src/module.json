@@ -1,26 +1,17 @@
 {
   "authors": [
     {
-      "name": "Stexinator"
+      "name": "Stexinator",
+      "flags": {}
     }
   ],
   "compatibility": {
-    "maximum": "11",
     "minimum": "11",
     "verified": "11"
   },
+  "title": "Salvage Union Combat Automation Module",
   "description": "A Salvage Union module to help with some combat automation",
-  "download": "https://github.com/Stexinator/salvage-union-combat-automation/releases/latest/download/module.zip",
-  "includes": [
-    "./assets/**",
-    "./packs/**",
-    "./languages/**",
-    "./scripts/**",
-    "./styles/**",
-    "./templates/**",
-    "./module.json",
-    "./README.md"
-  ],
+  "download": "https://github.com/Stexinator/salvage-union-combat-automation/releases/download/0.0.15/module.zip",
   "esmodules": [
     "scripts/hooks.js"
   ],
@@ -34,6 +25,7 @@
   ],
   "manifest": "https://github.com/Stexinator/salvage-union-combat-automation/releases/latest/download/module.json",
   "readme": "README.md",
+  "url": "https://github.com/Stexinator/salvage-union-combat-automation",
   "relationships": {
     "systems": [
       {
@@ -46,12 +38,20 @@
       }
     ]
   },
+  "includes": [
+    "./assets/**",
+    "./packs/**",
+    "./languages/**",
+    "./scripts/**",
+    "./styles/**",
+    "./templates/**",
+    "./module.json",
+    "./README.md"
+  ],
   "styles": [
     "styles/module.css"
   ],
-  "title": "Salvage Union Combat Automation Module",
-  "url": "https://github.com/Stexinator/salvage-union-combat-automation",
-  "version": "0.0.15",
+  "version": "0.0.16",
   "id": "salvage-union-combat-automation",
   "packs": [
     {
@@ -63,7 +63,8 @@
       "ownership": {
         "PLAYER": "OBSERVER",
         "ASSISTANT": "OWNER"
-      }
+      },
+      "flags": {}
     }
   ]
 }

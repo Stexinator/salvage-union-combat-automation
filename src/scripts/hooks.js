@@ -1,6 +1,11 @@
 import SalvageUnionCombatAutomationWeapons from "./weapons.js"
-import SalvageUnionCombatAutomationDamage from "./damage.js"
+import SalvageUnionCombatAutomationDamage from "./applyDamage.js"
 import SalvageUnionCombatAutomationResources from "./resources.js"
+import Settings from "./settings.js";
+
+Hooks.on("ready", () => {
+    Settings.addAllSettings();
+  });
 
 Hooks.on('renderSalvageUnionActorSheet', async function(actor, html) {
 
@@ -18,7 +23,10 @@ Hooks.on('renderSalvageUnionActorSheet', async function(actor, html) {
 
 Hooks.on('renderChatMessage', async function(message, html){
     html.find('.su-combatautomation-damagebutton').on('click', _ => {
-        SalvageUnionCombatAutomationDamage.applyDamage(message);
+        SalvageUnionCombatAutomationDamage.clickDamageButton(message);
+    })
+    html.find('.su-combatautomation-customdamagebutton').on('click', event => {
+        SalvageUnionCombatAutomationDamage.clickCustomDamageButton(message, event.currentTarget);
     })
 });
 

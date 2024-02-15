@@ -5,6 +5,12 @@
 - When targeted the output can apply the damage to the target via a button
 
 ## Changelog
+0.0.16
+- add ability to add custom buttons for combat
+  - you can find this option under settings
+  - you need to separate each entry with , oder ;
+
+
 0.0.15
 - do not inform player that items without uses do not have any uses left
 

@@ -42,7 +42,13 @@
       </p>
       {{#unless noTarget}}
         <button type='button' class="su-combatautomation-damagebutton">{{localize "salvage-union-combat-automation.buttons.deal-damage"}}</button>
+        <p class="su-combatautomation-customButtonRow">
+        {{#each customButtons}}
+          <button type='button' class="su-combatautomation-customdamagebutton" data-value={{this}}>{{this}}</button>
+        {{/each}}
+      </p>
       {{/unless}}
+      
     {{/if}}
   </section>
 </div>

@@ -6,3 +6,8 @@ button.su-combatautomation-resourcedicebutton
     text-align: center;
     border: none;
 }
+
+.su-combatautomation-customButtonRow {
+    display: flex;
+    flex-wrap: nowrap;
+}
