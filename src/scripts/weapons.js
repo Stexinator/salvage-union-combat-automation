@@ -84,9 +84,16 @@ export default class SalvageUnionCombatAutomationWeapons{
 
     static async handleTraits(weapon) {
         let checks = []
-        let hot = weapon.system.traits.filter(trait => trait.includes('Hot'))[0]
-        checks.push(SalvageUnionCombatAutomationHeat.handleHeat(hot, weapon.actor))
+        
+        if(weapon.system.traits.filter(trait => trait.includes('Hot').length > 0)) {
+            let hot = weapon.system.traits.filter(trait => trait.includes('Hot'))[0]
+            checks.push(SalvageUnionCombatAutomationHeat.handleHeat(hot, weapon.actor))
+        }
 
+        if(weapon.system.traits.includes('Heat Spike')) {
+            checks.push(SalvageUnionCombatAutomationHeat.handleHeatspike(weapon.actor))
+        }
+        
         if(weapon.system.traits.filter(trait => trait.includes('Uses').length > 0)) {
             checks.push(SalvageUnionCombatAutomationResources.handleUsesWeapon(weapon))
         }

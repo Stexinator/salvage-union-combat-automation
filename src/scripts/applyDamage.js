@@ -25,7 +25,7 @@ export default class SalvageUnionCombatAutomationDamage{
 
         let damageNumber;
         
-        if(target.system.sp) {
+        if(target.system.healthType.includes("sp")) {
             damageNumber = await this.applyDamageToSp(target, damage, modifier)
         }
         else {
@@ -58,8 +58,16 @@ export default class SalvageUnionCombatAutomationDamage{
             damageNumber = Math.floor(damageNumber*0.5);
         }
 
-        let newSp = target.system.sp.value - damageNumber;
-        target.update({ 'system.sp.value': newSp });
+        let newSp;
+        if(target.system.sp?.value) {
+            newSp = target.system.sp.value - damageNumber;
+            target.update({ 'system.sp.value': newSp });
+        }
+        else {
+            newSp = target.system.hp.value - damageNumber;
+            target.update({ 'system.hp.value': newSp });
+        }
+
 
         if(newSp <= 0) {
             this.markDefeated(target)
@@ -68,7 +76,7 @@ export default class SalvageUnionCombatAutomationDamage{
         return damageNumber;
     }
 
-    static async applyDamageToHp(target, damage) {
+    static async applyDamageToHp(target, damage, modifier) {
         let damageNumber = damage.match(/\d+/).pop();
 
         if(modifier) {

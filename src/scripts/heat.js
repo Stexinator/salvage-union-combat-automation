@@ -43,7 +43,10 @@ export default class SalvageUnionCombatAutomationHeat{
         return true;
     }
 
-    static async handeHeatspike() {
-        
+    static async handleHeatspike(actor) {
+        if(actor.system.heat?.value) {
+            game.salvage.heatRoll(actor.system.heat.value)
+        }
+        return true;
     }
 }
