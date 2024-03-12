@@ -6,6 +6,9 @@
 
 ## Changelog
 
+0.0.19
+- output heat check when maximum heat due to usage
+
 0.0.17
 - added handling for pilots with SP
 - skip heat spikes for npc mechs

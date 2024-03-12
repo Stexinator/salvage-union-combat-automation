@@ -28,14 +28,7 @@ export default class SalvageUnionCombatAutomationHeat{
         }
 
         if((heat + heatValue) == max_heat) {
-            let message = await ChatMessage.create({ 
-                content:  game.i18n.format("salvage-union-combat-automation.heat-check-required") +
-                '<button type="button" class="su-combatautomation-heatcheckbutton">'+game.i18n.format("salvage-union-combat-automation.buttons.heatcheck")+'</button>', 
-                speaker: { alias: game.user.name } 
-            });
-
-            message.setFlag('salvage-union-combat-automation', 'heat', (heat + heatValue))
-            console.log(message)
+            this.handleHeatspike(actor)
         }
 
         actor.update({ 'system.heat.value': heat + heatValue });
