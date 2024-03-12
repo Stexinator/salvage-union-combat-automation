@@ -25,7 +25,7 @@ export default class SalvageUnionCombatAutomationDamage{
 
         let damageNumber;
         
-        if(target.system.healthType.includes("sp")) {
+        if(target.system.healthType?.includes("sp") || target.system.sp?.value) {
             damageNumber = await this.applyDamageToSp(target, damage, modifier)
         }
         else {
