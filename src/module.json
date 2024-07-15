@@ -7,7 +7,7 @@
   ],
   "compatibility": {
     "minimum": "11",
-    "verified": "11"
+    "verified": "12"
   },
   "title": "Salvage Union Combat Automation Module",
   "description": "A Salvage Union module to help with some combat automation",
