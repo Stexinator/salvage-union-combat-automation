@@ -5,6 +5,7 @@
       "flags": {}
     }
   ],
+  "version": "0.0.20",
   "compatibility": {
     "minimum": "11",
     "verified": "12"
@@ -51,7 +52,6 @@
   "styles": [
     "styles/module.css"
   ],
-  "version": "0.0.19",
   "id": "salvage-union-combat-automation",
   "packs": [
     {
