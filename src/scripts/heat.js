@@ -1,7 +1,7 @@
 export default class SalvageUnionCombatAutomationHeat{
     static async handleHeat(hot, actor) {
 
-        if(hot == undefined || actor.type == "npc-mech") {
+        if(hot == undefined || actor.type !== "mech") {
             return true;
         }
 

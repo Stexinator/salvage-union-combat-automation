@@ -1,4 +1,4 @@
-export default class SalvageUnionCombatAutomationDamage{
+export default class SalvageUnionCombatAutomationDamage {
 
     static async clickDamageButton(message) {
 
@@ -15,51 +15,52 @@ export default class SalvageUnionCombatAutomationDamage{
 
         let modifier = button.dataset.value;
 
-        this.applyDamage(target, damage, modifier);        
+        this.applyDamage(target, damage, modifier);
     }
 
     static async applyDamage(target, damage, modifier) {
-        if(!target) {
+        if (!target) {
             return;
         }
 
         let damageNumber;
-        
-        if(target.system.healthType?.includes("sp") || target.system.sp?.value) {
+
+        if (target.system.healthType?.includes("sp") || target.system.sp?.value) {
             damageNumber = await this.applyDamageToSp(target, damage, modifier)
         }
         else {
             damageNumber = await this.applyDamageToHp(target, damage, modifier)
         }
 
-        ChatMessage.create({ 
-            content:  game.i18n.format("salvage-union-combat-automation.apply-damage", {damage: damage + (modifier? ' ' + modifier + ' ('+damageNumber+')' : '' ), name: target.name}), 
-            speaker: { alias: game.user.name } 
-        });
-        
+        const msgData = {
+            content: game.i18n.format("salvage-union-combat-automation.apply-damage", { damage: damage + (modifier ? ' ' + modifier + ' (' + damageNumber + ')' : ''), name: target.name }),
+            type: CONST.CHAT_MESSAGE_STYLES.ROLL,
+        };
+        ChatMessage.applyRollMode(msgData, game.settings.get("core", "rollMode"));
+        ChatMessage.create(msgData);
     }
 
     static async applyDamageToSp(target, damage, modifier) {
         let damageNumber = parseInt(damage.match(/\d+/).pop());
 
-        if(modifier) {
-            if(modifier.includes('*') ||modifier.includes('x')) {
+        if (modifier) {
+            if (modifier.includes('*') || modifier.includes('x')) {
                 damageNumber *= parseInt(modifier.match(/\d+/).pop());
             }
-            else if(modifier.includes('/')) {
-                damageNumber = Math.floor(damageNumber /parseInt(modifier.match(/\d+/).pop()));
+            else if (modifier.includes('/')) {
+                damageNumber = Math.floor(damageNumber / parseInt(modifier.match(/\d+/).pop()));
             }
             else {
                 damageNumber += parseInt(modifier);
             }
         }
 
-        if(damage.includes("HP")) {
-            damageNumber = Math.floor(damageNumber*0.5);
+        if (damage.includes("HP")) {
+            damageNumber = Math.floor(damageNumber * 0.5);
         }
 
         let newSp;
-        if(target.system.sp?.value) {
+        if (target.system.sp?.value) {
             newSp = target.system.sp.value - damageNumber;
             target.update({ 'system.sp.value': newSp });
         }
@@ -69,7 +70,7 @@ export default class SalvageUnionCombatAutomationDamage{
         }
 
 
-        if(newSp <= 0) {
+        if (newSp <= 0) {
             this.markDefeated(target)
         }
 
@@ -79,11 +80,11 @@ export default class SalvageUnionCombatAutomationDamage{
     static async applyDamageToHp(target, damage, modifier) {
         let damageNumber = damage.match(/\d+/).pop();
 
-        if(modifier) {
-            if(modifier.includes('*')) {
+        if (modifier) {
+            if (modifier.includes('*')) {
                 damageNumber *= parseInt(modifier.match(/\d+/).pop());
             }
-            else if(modifier.includes('/')) {
+            else if (modifier.includes('/')) {
                 damageNumber /= Math.floor(parseInt(modifier.match(/\d+/).pop()));
             }
             else {
@@ -91,24 +92,24 @@ export default class SalvageUnionCombatAutomationDamage{
             }
         }
 
-        if(damage.includes("SP") && target.system.healthType !== 'sp') {
-            damageNumber = damageNumber*2;
-       }
+        if (damage.includes("SP") && target.system.healthType !== 'sp') {
+            damageNumber = damageNumber * 2;
+        }
 
-       let newHp = target.system.hp.value - damageNumber;
-       target.update({ 'system.hp.value': newHp });
+        let newHp = target.system.hp.value - damageNumber;
+        target.update({ 'system.hp.value': newHp });
 
-       if(newHp <= 0) {
-        this.markDefeated(target)
-       }
+        if (newHp <= 0) {
+            this.markDefeated(target)
+        }
     }
 
     static async markDefeated(target) {
         let token = target.token
-        await token?.combatant?.update({defeated:true});
+        await token?.combatant?.update({ defeated: true });
         const status = CONFIG.statusEffects.find(e => e.id === CONFIG.specialStatusEffects.DEFEATED);
 
         const effect = token.actor && status ? status : CONFIG.controlIcons.defeated;
-        await token.object.toggleEffect(effect, {overlay: true, active: true});
+        await token.object.toggleEffect(effect, { overlay: true, active: true });
     }
 }
