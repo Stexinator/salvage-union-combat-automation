@@ -1,22 +1,23 @@
-import SalvageUnionCombatAutomationHeat from "./heat.js"
-import SalvageUnionCombatAutomationResources from "./resources.js"
-
+import SalvageUnionCombatAutomationHeat from './heat.js';
+import SalvageUnionCombatAutomationResources from './resources.js';
 
 export default class SalvageUnionCombatAutomationWeapons {
-
     static addAutomationToWeapons(actor, html) {
-        let weapons = this.getAllWeapons(actor)
-        this.addButtonToWeapons(weapons, html)
+        let weapons = this.getAllWeapons(actor);
+        this.addButtonToWeapons(weapons, html);
     }
 
     static getAllWeapons(sheet) {
-        let actor = sheet.object
+        let actor = sheet.object;
 
         let systems = actor?.system?.systems || [];
         let equipments = actor?.system?.equipment || [];
         let abilities = actor?.system?.abilities || [];
 
-        let weapons = systems.concat(equipments).concat(abilities).filter(item => item.system.damage && item.system.damage != "")
+        let weapons = systems
+            .concat(equipments)
+            .concat(abilities)
+            .filter(item => item.system.damage && item.system.damage != '');
 
         return weapons;
     }
@@ -31,76 +32,87 @@ export default class SalvageUnionCombatAutomationWeapons {
         }, []);
 
         weaponHtmls.forEach(entry => {
-            entry.node.append(
-                this.createAttackRollButton(entry.uuid)
-            );
+            entry.node.append(this.createAttackRollButton(entry.uuid));
         });
     }
 
     static createAttackRollButton(weaponId) {
         const tooltip = game.i18n.localize('salvage-union-combat-automation.attackRoll');
 
-        return `<small><button type='button' title='${tooltip}' class="su-combatautomation-combatdicebutton" weapon-uuid='${weaponId}'><i class="fas fa-dice-d20"></i></button></small>`
+        return `<small><button type='button' title='${tooltip}' class="su-combatautomation-combatdicebutton" weapon-uuid='${weaponId}'><i class="fas fa-dice-d20"></i></button></small>`;
     }
 
     static async handleAttackRollButton(ev) {
-        let weapon = await fromUuid(ev.currentTarget.attributes['weapon-uuid'].value)
+        let weapon = await fromUuid(ev.currentTarget.attributes['weapon-uuid'].value);
+        this.handleAttackRoll(weapon);
+    }
 
-        let rollTable = (await game.packs.get("salvage-union-combat-automation.su-combat-automation-rolltable").getDocuments()).find(table => table.name == "Weapon Attack")
+    static async handleAttackRollViaUuid(weaponUuid) {
+        let weapon = await fromUuid(weaponUuid);
+        this.handleAttackRoll(weapon);
+    }
 
-        let result = await rollTable.roll()
+    static async handleAttackRoll(weapon) {
+        let rollTable = (
+            await game.packs.get('salvage-union-combat-automation.su-combat-automation-rolltable').getDocuments()
+        ).find(table => table.name == 'Weapon Attack');
 
-        let traits = weapon.system.traits.join(" // ")
+        let result = await rollTable.roll();
+
+        let traits = weapon.system.traits.join(' // ');
 
         if (await this.handleTraits(weapon)) {
-            const messageTemplate = 'modules/salvage-union-combat-automation/templates/attack.hbs'
+            const messageTemplate = 'modules/salvage-union-combat-automation/templates/attack.hbs';
             const templateContext = {
                 name: weapon.name,
-                target: game.user.targets?.first()?.document.name ?? game.i18n.localize('salvage-union-combat-automation.no-target'),
+                target:
+                    game.user.targets?.first()?.document.name ??
+                    game.i18n.localize('salvage-union-combat-automation.no-target'),
                 result: result.results[0],
                 system: weapon.system,
                 traits: traits,
                 roll: result.roll,
                 activeStatus: CONFIG.SALVAGE.statusTypes.ACTIVE,
                 noTarget: game.user.targets?.first()?.document.name == null,
-                customButtons: game.settings.get('salvage-union-combat-automation', 'customDamageButtons').replace(',', ';').split(';')
-            }
+                customButtons: game.settings
+                    .get('salvage-union-combat-automation', 'customDamageButtons')
+                    .replace(',', ';')
+                    .split(';')
+            };
 
-            const content = await renderTemplate(messageTemplate, templateContext)
+            const content = await renderTemplate(messageTemplate, templateContext);
             const chatData = {
                 speaker: ChatMessage.getSpeaker({ actor: weapon.actor }),
                 roll: result.roll,
                 content: content,
                 sound: CONFIG.sounds.dice,
-                type: CONST.CHAT_MESSAGE_STYLES.ROLL,
-            }
-            ChatMessage.applyRollMode(chatData, game.settings.get("core", "rollMode"));
+                type: CONST.CHAT_MESSAGE_STYLES.ROLL
+            };
+            ChatMessage.applyRollMode(chatData, game.settings.get('core', 'rollMode'));
 
-            let message = await ChatMessage.create(chatData)
+            let message = await ChatMessage.create(chatData);
 
-            message.setFlag('salvage-union-combat-automation', 'damage', weapon.system.damage)
-            message.setFlag('salvage-union-combat-automation', 'target', game.user.targets?.first()?.actor.uuid)
+            message.setFlag('salvage-union-combat-automation', 'damage', weapon.system.damage);
+            message.setFlag('salvage-union-combat-automation', 'target', game.user.targets?.first()?.actor.uuid);
         }
     }
 
     static async handleTraits(weapon) {
-        let checks = []
+        let checks = [];
 
         if (weapon.system.traits.filter(trait => trait.includes('Hot').length > 0)) {
-            let hot = weapon.system.traits.filter(trait => trait.includes('Hot'))[0]
-            checks.push(SalvageUnionCombatAutomationHeat.handleHeat(hot, weapon.actor))
+            let hot = weapon.system.traits.filter(trait => trait.includes('Hot'))[0];
+            checks.push(SalvageUnionCombatAutomationHeat.handleHeat(hot, weapon.actor));
         }
 
         if (weapon.system.traits.includes('Heat Spike')) {
-            checks.push(SalvageUnionCombatAutomationHeat.handleHeatspike(weapon.actor))
+            checks.push(SalvageUnionCombatAutomationHeat.handleHeatspike(weapon.actor));
         }
 
         if (weapon.system.traits.filter(trait => trait.includes('Uses').length > 0)) {
-            checks.push(SalvageUnionCombatAutomationResources.handleUsesWeapon(weapon))
+            checks.push(SalvageUnionCombatAutomationResources.handleUsesWeapon(weapon));
         }
-
 
         return (await Promise.all(checks)).every(check => check);
     }
-
 }
