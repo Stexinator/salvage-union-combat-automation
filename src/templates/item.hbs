@@ -1,37 +1,39 @@
 <div class="salvage-union">
-  <section class="item {{type}} {{statusClass item.system.status}}">
-    <h2 class="title {{titleClass}}">
-      {{#if ap }}
-        <span class="item-cost" data-tooltip="{{localize "salvage-union.sheets.items.ap"}}">
-          {{localize "salvage-union.sheets.actor.pilot.ap-cost" cost = ap}}
-        </span>
-      {{/if}}
+    {{log this}}
+    {{log ap ep}}
+    <section class="item {{type}} {{statusClass item.system.status}}">
+        <h2 class="title {{titleClass}}">
+            {{#if ap }}
+                <span class="item-cost" data-tooltip="{{localize "salvage-union.sheets.items.ap"}}">
+                    {{localize "salvage-union.sheets.actor.pilot.ap-cost" cost = ap}}
+                </span>
+            {{/if}}
 
-      {{#if ep }}
-        <span class="item-cost" data-tooltip="{{localize "salvage-union.sheets.items.ep"}}">
-          {{localize "salvage-union.sheets.actor.mech.ep-cost" cost = ep}}
-        </span>
-      {{/if}}
+            {{#if ep }}
+                <span class="item-cost" data-tooltip="{{localize "salvage-union.sheets.items.ep"}}">
+                    {{localize "salvage-union.sheets.actor.mech.ep-cost" cost = ep}}
+                </span>
+            {{/if}}
 
-      <span class="condensed">{{item.name}}</span>
+            <span class="condensed">{{item.name}}</span>
 
-      {{#if (and item.system.status (gt item.system.status activeStatus))}}
-        <small class="inverted all-caps status">{{localize (statusLabel item.system.status)}}</small>
-      {{/if}}
-    </h2>
+            {{#if (and item.system.status (gt item.system.status activeStatus))}}
+                <small class="inverted all-caps status">{{localize (statusLabel item.system.status)}}</small>
+            {{/if}}
+        </h2>
 
-    {{{item.system.description}}}
-  {{#if result}}
-    <p class="center">
-      <span class="inverted all-caps">
-        <strong>{{localize "salvage-union.chat.roll-result" roll=roll.total }}</strong>
-      </span>
-    </p>
-    <p>
-      <strong>{{{range result.range}}}:</strong>
-      {{{result.text}}}
-    </p>
-  {{/if}}
+        {{{item.system.description}}}
+        {{#if result}}
+            <p class="center">
+                <span class="inverted all-caps">
+                    <strong>{{localize "salvage-union.chat.roll-result" roll=roll.total }}</strong>
+                </span>
+            </p>
+            <p>
+                <strong>{{{range result.range}}}:</strong>
+                {{{result.text}}}
+            </p>
+        {{/if}}
 
-  </section>
+    </section>
 </div>

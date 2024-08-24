@@ -83,26 +83,7 @@ export default class SalvageUnionCombatAutomationResources {
             return;
         }
 
-        let rollTable = item.system.table;
-        let result = await rollTable?.roll();
-
-        const messageTemplate = 'modules/salvage-union-combat-automation/templates/item.hbs';
-        const templateContext = {
-            item: item,
-            roll: result?.roll,
-            result: result?.results[0],
-            ep: value
-        };
-
-        const content = await renderTemplate(messageTemplate, templateContext);
-        const chatData = {
-            user: game.user.id,
-            content: content,
-            sound: CONFIG.sounds.dice,
-            type: CONST.CHAT_MESSAGE_TYPES.ROLL
-        };
-
-        await ChatMessage.create(chatData);
+        this.createChatMessage(item, { ep: value });
 
         actor.update({ 'system.energy-points.value': energypoints - value });
     }
@@ -135,26 +116,7 @@ export default class SalvageUnionCombatAutomationResources {
             return;
         }
 
-        let rollTable = item.system.table;
-        let result = await rollTable?.roll();
-
-        const messageTemplate = 'modules/salvage-union-combat-automation/templates/item.hbs';
-        const templateContext = {
-            item: item,
-            roll: result?.roll,
-            result: result?.results[0],
-            ap: value
-        };
-
-        const content = await renderTemplate(messageTemplate, templateContext);
-        const chatData = {
-            user: game.user.id,
-            content: content,
-            sound: CONFIG.sounds.dice,
-            type: CONST.CHAT_MESSAGE_TYPES.ROLL
-        };
-
-        await ChatMessage.create(chatData);
+        this.createChatMessage(item, { ap: value });
 
         actor.update({ 'system.ability-points.value': abilitypoints - value });
     }
@@ -169,25 +131,7 @@ export default class SalvageUnionCombatAutomationResources {
             return;
         }
 
-        let rollTable = item.system.table;
-        let result = await rollTable?.roll();
-
-        const messageTemplate = 'modules/salvage-union-combat-automation/templates/item.hbs';
-        const templateContext = {
-            item: item,
-            roll: result?.roll,
-            result: result?.results[0]
-        };
-
-        const content = await renderTemplate(messageTemplate, templateContext);
-        const chatData = {
-            user: game.user.id,
-            content: content,
-            sound: CONFIG.sounds.dice,
-            type: CONST.CHAT_MESSAGE_TYPES.ROLL
-        };
-
-        await ChatMessage.create(chatData);
+        this.createChatMessage(item);
 
         item.update({ 'system.uses.value': item.system.uses.value - 1 });
     }
@@ -206,4 +150,34 @@ export default class SalvageUnionCombatAutomationResources {
 
         return true;
     }
+
+    static async createChatMessage(item, options = null) {
+        let rollTable = item.system.table;
+        let result = await rollTable?.roll();
+
+        const messageTemplate = 'modules/salvage-union-combat-automation/templates/item.hbs';
+        const templateContext = {
+            item: item,
+            roll: result?.roll,
+            result: result?.results[0],
+            ap: options?.ap,
+            ep: options?.ep
+        };
+
+        const content = await renderTemplate(messageTemplate, templateContext);
+        const chatData = {
+            user: game.user.id,
+            content: content,
+            sound: CONFIG.sounds.dice,
+            type: CONST.CHAT_MESSAGE_TYPES.ROLL
+        };
+        chatData.flags = {
+            SalvageUnion: {
+                item: item
+            }
+        };
+
+        await ChatMessage.create(chatData);
+    }
 }
+

@@ -64,12 +64,11 @@ export default class SalvageUnionCombatAutomationWeapons {
         if (await this.handleTraits(weapon)) {
             const messageTemplate = 'modules/salvage-union-combat-automation/templates/attack.hbs';
             const templateContext = {
-                name: weapon.name,
+                weapon: weapon,
                 target:
                     game.user.targets?.first()?.document.name ??
                     game.i18n.localize('salvage-union-combat-automation.no-target'),
                 result: result.results[0],
-                system: weapon.system,
                 traits: traits,
                 roll: result.roll,
                 activeStatus: CONFIG.SALVAGE.statusTypes.ACTIVE,
@@ -87,6 +86,11 @@ export default class SalvageUnionCombatAutomationWeapons {
                 content: content,
                 sound: CONFIG.sounds.dice,
                 type: CONST.CHAT_MESSAGE_STYLES.ROLL
+            };
+            chatData.flags = {
+                SalvageUnion: {
+                    item: weapon
+                }
             };
             ChatMessage.applyRollMode(chatData, game.settings.get('core', 'rollMode'));
 
