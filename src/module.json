@@ -5,14 +5,14 @@
       "flags": {}
     }
   ],
-  "version": "0.0.23",
+  "version": "0.0.24",
   "compatibility": {
     "minimum": "11",
     "verified": "12"
   },
   "title": "Salvage Union Combat Automation Module",
   "description": "A Salvage Union module to help with some combat automation",
-  "download": "https://github.com/Stexinator/salvage-union-combat-automation/releases/download/0.0.22/module.zip",
+  "download": "https://github.com/Stexinator/salvage-union-combat-automation/releases/download/0.0.23/module.zip",
   "esmodules": [
     "scripts/hooks.js"
   ],
