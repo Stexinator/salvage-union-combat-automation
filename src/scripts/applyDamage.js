@@ -33,7 +33,7 @@ export default class SalvageUnionCombatAutomationDamage {
                 damage: damage + (modifier ? ' ' + modifier + ' (' + damageNumber + ')' : ''),
                 name: target.name
             }),
-            type: CONST.CHAT_MESSAGE_STYLES.ROLL ?? CONST.CHAT_MESSAGE_TYPES.ROLL
+            type: CONST.CHAT_MESSAGE_STYLES?.ROLL ?? CONST.CHAT_MESSAGE_TYPES.ROLL
         };
         ChatMessage.applyRollMode(msgData, game.settings.get('core', 'rollMode'));
         ChatMessage.create(msgData);
