@@ -85,7 +85,7 @@ export default class SalvageUnionCombatAutomationWeapons {
                 roll: result.roll,
                 content: content,
                 sound: CONFIG.sounds.dice,
-                type: CONST.CHAT_MESSAGE_STYLES.ROLL
+                type: CONST.CHAT_MESSAGE_STYLES.ROLL ?? CONST.CHAT_MESSAGE_TYPES.ROLL
             };
             chatData.flags = {
                 SalvageUnion: {
