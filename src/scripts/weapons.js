@@ -82,7 +82,7 @@ export default class SalvageUnionCombatAutomationWeapons {
             const content = await renderTemplate(messageTemplate, templateContext);
             const chatData = {
                 speaker: ChatMessage.getSpeaker({ actor: weapon.actor }),
-                roll: result.roll,
+                rolls: [result.roll],
                 content: content,
                 sound: CONFIG.sounds.dice,
                 type: CONST.CHAT_MESSAGE_STYLES?.ROLL ?? CONST.CHAT_MESSAGE_TYPES.ROLL

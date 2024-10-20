@@ -168,6 +168,7 @@ export default class SalvageUnionCombatAutomationResources {
         const chatData = {
             user: game.user.id,
             content: content,
+            rolls: [result?.roll],
             sound: CONFIG.sounds.dice,
             type: CONST.CHAT_MESSAGE_STYLES?.ROLL ?? CONST.CHAT_MESSAGE_TYPES.ROLL
         };
@@ -180,5 +181,4 @@ export default class SalvageUnionCombatAutomationResources {
         await ChatMessage.create(chatData);
     }
 }
-
 
